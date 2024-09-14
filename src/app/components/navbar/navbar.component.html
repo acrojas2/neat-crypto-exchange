@@ -1,0 +1,7 @@
+<nav *ngIf="user$ | async as user; else null" class="flex items-center px-8 py-4 mx-auto text-white bg-primary-neat-blue-800">
+  <div class="flex-1 text-lg">NEAT CRYPTO EXCHANGE</div>
+  <div class="flex items-center gap-4">
+    <span>Bienvenido, {{ user.email }}</span>
+    <button (click)="logout()" class="px-4 py-2 font-semibold text-white border-white rounded bg-neat-rose-500">Cerrar sesión</button>
+  </div>
+</nav>
