@@ -1,0 +1,24 @@
+<div class="flex items-center justify-center min-h-screen">
+  <div class="flex flex-col p-6 bg-white rounded-md w-96">
+    <h2 class="mb-4 text-lg font-bold text-center">Inicio de sesión</h2>
+    <div *ngIf="errorMessage" class="px-4 py-2 my-3 text-xs rounded bg-neat-red-100 text-neat-red-500">
+      {{ errorMessage }}
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col">
+      <div class="mb-4">
+        <label for="email" class="block font-medium text-gray-400">Email</label>
+        <input id="email" type="email" formControlName="email" required class="block w-full px-4 py-2 mt-1 text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200"/>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="block font-medium text-gray-400">Password</label>
+        <input id="password" type="password" formControlName="password" required class="block w-full px-4 py-2 mt-1 text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200"/>
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid" class="py-3 mt-6 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400">Iniciar sesión</button>
+    </form>
+
+    <div class="mt-4 text-center">
+      <span class="text-xs">Si aún no tienes cuenta con nosotros, registrate <a routerLink="/sign-up" class="text-sm underline">acá</a></span>
+    </div>
+  </div>
+</div>
