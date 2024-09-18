@@ -1,18 +1,29 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { WalletCardComponent } from '../wallet-card/wallet-card.component';
+import { CommonModule } from '@angular/common';
+import { WalletService } from '../../services/wallet-service.service';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [WalletCardComponent, CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  providers: [WalletService]
 })
-export class HomeComponent {
-  constructor(
-    private authService: AuthService,
-  ) {
-    console.log(authService.user)
+export class HomeComponent implements OnInit {
+  wallets: any[] = [];
+
+  constructor(private walletService: WalletService) { }
+
+  async ngOnInit(): Promise<void> {
+    try {
+      this.wallets = await this.walletService.getWallets();
+      console.log("[WALLETS]",this.wallets)
+    } catch (error) {
+      console.error('Error al cargar las wallets:', error);
+    }
   }
 
 }

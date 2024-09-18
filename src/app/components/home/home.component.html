@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="w-full max-w-6xl px-4 mx-auto">
+  <div class="p-4 m-6 bg-white rounded">
+    <h2 class="mb-4 text-2xl font-bold">Mis billeteras</h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <wallet-card *ngFor="let wallet of wallets"
+        [name]="wallet.currencyName"
+        [code]="wallet.currencyCode"
+        [balance]="wallet.balance"
+        class="w-full">
+      </wallet-card>
+    </div>
+  </div>
+</div>
