@@ -1,0 +1,25 @@
+<table class="w-full">
+  <thead>
+    <tr class=" bg-slate-200">
+      <th class="p-4 font-medium text-left">Moneda</th>
+      <th class="p-4 font-medium text-right">Valor actual</th>
+      <th class="p-4 font-medium text-right">Variación 24h</th>
+      <th class="p-4 font-medium">Acción</th>
+    </tr>
+  </thead>
+  <tbody class="w-full">
+    <tr *ngFor="let marketPrice of marketPrices" class="border">
+        <td class="p-4 text-left">{{ marketPrice.baseCurrency }}</td>
+        <td class="p-4 text-right">{{ marketPrice.currentPrice }} {{ marketPrice.quoteCurrency }}</td>
+        <td [ngClass]="{
+          'text-green-600': isVariationRising(marketPrice.oneDayVariation),
+          'text-red-500': !isVariationRising(marketPrice.oneDayVariation)
+          }"
+          class="p-4 text-right"
+        >
+          {{ formatVariationPrice(marketPrice.oneDayVariation) }}
+        </td>
+        <td class="p-4 text-center"> Comprar </td>
+    </tr>
+  </tbody>
+</table>
