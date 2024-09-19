@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletCardComponent } from '../wallet-card/wallet-card.component';
+import { MarketsComponent } from '../markets/markets.component';
 import { CommonModule } from '@angular/common';
 import { WalletService } from '../../services/wallet-service.service';
 
@@ -7,7 +8,7 @@ import { WalletService } from '../../services/wallet-service.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [WalletCardComponent, CommonModule],
+  imports: [CommonModule, WalletCardComponent, MarketsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers: [WalletService]
@@ -20,7 +21,6 @@ export class HomeComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       this.wallets = await this.walletService.getWallets();
-      console.log("[WALLETS]",this.wallets)
     } catch (error) {
       console.error('Error al cargar las wallets:', error);
     }
