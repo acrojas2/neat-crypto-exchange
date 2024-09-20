@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletCardComponent } from '../wallet-card/wallet-card.component';
-import { MarketsComponent } from '../markets/markets.component';
+import { WalletCardComponent } from './wallet-card/wallet-card.component';
+import { MarketsComponent } from './markets/markets.component';
 import { CommonModule } from '@angular/common';
 import { WalletService } from '../../services/wallet-service.service';
 
