@@ -17,4 +17,14 @@ export class MarketsService {
       throw error;
     }
   }
+
+  async getMarketPriceById({ marketId } : { marketId: string }): Promise<any> {
+    try {
+      const response = await neatAxiosClient.get(`/market-prices/${marketId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los market prices:', error);
+      throw error;
+    }
+  }
 }
