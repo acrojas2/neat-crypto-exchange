@@ -1,0 +1,70 @@
+<div class="flex items-center justify-center min-h-screen">
+  <div class="flex-col items-start justify-center w-2/5">
+    <a [routerLink]="['/home']" class="text-center underline"> < Volver al home</a>
+
+    <form [formGroup]="form" class="flex flex-col flex-1 p-10 mt-4 bg-white rounded-lg shadow-md">
+
+      <div *ngIf="currentStepForm === 1" class="mb-4">
+        <h2 class="mb-8 text-lg font-bold text-center">¿Cuánto quieres {{ orderType() }}?</h2>
+        <div class="mb-4">
+          <label for="amount" class="block font-medium">Monto</label>
+          <input
+            id="amount"
+            type="number"
+            formControlName="amount"
+            placeholder="0.00"
+            class="block w-full px-4 py-2 mt-1 mb-2 text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200"
+          >
+        </div>
+      </div>
+
+      <div *ngIf="currentStepForm === 2" class="flex flex-col mb-4">
+        <h2 class="mb-8 text-lg font-bold text-center">Confirmación de {{ orderType() }}</h2>
+        <div class="flex flex-row pb-5 mb-5 border-b">
+          <p class="flex-1">Vas a comprar {{ toWalletCurrencyCode }}</p>
+          <p>{{ confirmationOrderData.amount }}</p>
+        </div>
+        <div class="flex flex-row pb-5 mb-5 border-b">
+          <p class="flex-1">Monto en moneda fiat {{ toWalletCurrencyCode }}</p>
+          <p>{{ confirmationOrderData.fiatAmount }}</p>
+        </div>
+        <div class="flex flex-row pb-5 mb-5 border-b">
+          <p class="flex-1">Cuenta de origen</p>
+          <p>Billetera {{ setWalletsDestinationType()['from'] }}</p>
+        </div>
+        <div class="flex flex-row mb-5">
+          <p class="flex-1">Cuenta de destino</p>
+          <p>Billetera {{ setWalletsDestinationType()['to'] }}</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        (click)="nextStep()"
+        *ngIf="currentStepForm < totalStepsForm"
+        class="py-3 mt-6 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400"
+      >
+        Continuar
+      </button>
+
+      <button
+        type="submit"
+        (click)="nextStep()"
+        *ngIf="currentStepForm === totalStepsForm"
+        class="py-3 mb-2 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400"
+      >
+        Confirmar
+      </button>
+
+      <button
+        type="button"
+        (click)="previousStep()"
+        *ngIf="currentStepForm > 1"
+        class="py-3 font-semibold border rounded-full text-primary-neat-blue-500 bg-primary-neat-blue-200 hover:bg-white border-primary-neat-blue-300"
+      >
+        Volver
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -14,10 +14,23 @@ export class WalletService {
       const currentUser = this.authService.user;
       const userId = currentUser?.uid;
 
-      const response = await neatAxiosClient.get(`/users/${userId}/wallets`); // Ajusta el endpoint según corresponda
-      return response.data.wallets;
+      const response = await neatAxiosClient.get(`/users/${userId}/wallets`);
+      return response.data.wallets
     } catch (error) {
-      console.error('Error al obtener las wallets:', error);
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async getWalletByCurrencyCode({ currencyCode } : { currencyCode : string }): Promise<any> {
+    try {
+      const currentUser = this.authService.user;
+      const userId = currentUser?.uid;
+
+      const response = await neatAxiosClient.get(`/users/${userId}/wallets/${currencyCode}`);
+      return response.data.wallet;
+    } catch (error) {
+      console.error(error);
       throw error;
     }
   }
