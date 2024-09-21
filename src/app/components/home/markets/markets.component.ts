@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MarketsService } from '../../../services/markets-service.service';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-markets',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './markets.component.html',
   styleUrl: './markets.component.scss',
   providers: [MarketsService]

@@ -19,7 +19,19 @@
         >
           {{ formatVariationPrice(marketPrice.oneDayVariation) }}
         </td>
-        <td class="p-4 text-center"> Comprar </td>
+        <td class="p-4 text-center">
+          <a
+            [routerLink]="['/buy-sell']"
+            [queryParams]="{
+              type: 'buy',
+              fromWalletCurrencyCode: marketPrice.baseCurrency,
+              toWalletCurrencyCode: marketPrice.quoteCurrency
+              }"
+            class="text-center underline"
+          >
+            Comprar
+          </a>
+        </td>
     </tr>
   </tbody>
 </table>
