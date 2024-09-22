@@ -37,6 +37,14 @@ export class BuySellFormComponent implements OnInit {
     fiatAmount: 0,
   }
 
+  currentMarket: {
+    market: {
+      minOrderAmount: [number, string];
+      [key: string]: number | string | any[];
+    }
+
+  } = { market: { minOrderAmount: [ 0, ''] } }
+
 
   constructor(
     private route: ActivatedRoute,
@@ -46,13 +54,12 @@ export class BuySellFormComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       currency: ['', Validators.required],
-      // To Do: Poner el min del market
-      amount: ['', [Validators.required, Validators.min(0.01)]],
+      amount: [''],
     })
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params: Params) => {
+    this.route.queryParams.subscribe(async (params: Params) => {
       this.fromWalletCurrencyCode = params['fromWalletCurrencyCode'] || null;
       this.toWalletCurrencyCode = params['toWalletCurrencyCode']
       this.type = params['type'] || null;
@@ -60,22 +67,45 @@ export class BuySellFormComponent implements OnInit {
       if (this.fromWalletCurrencyCode) {
         this.loadWallet(this.fromWalletCurrencyCode);
       }
+      const marketId = this.getMarketId();
 
-      this.loadMarketPrice('BTC-USD')
+      this.loadMarketPrice(marketId);
+
+      await this.loadMarket(marketId);
+
+      const { minOrderAmount } = this.currentMarket.market;
+      this.updateAmountFormValidation(minOrderAmount);
+
     });
   }
 
+  getMarketId() {
+    if (this.type == 'buy') {
+    return `${this.toWalletCurrencyCode}-${this.fromWalletCurrencyCode}`
+    }
+    return `${this.fromWalletCurrencyCode}-${this.toWalletCurrencyCode}`
+  }
+
   async loadWallet(currencyCode: string): Promise<any> {
-    this.wallet = await this.walletService.getWalletByCurrencyCode({ currencyCode })
+    this.wallet = await this.walletService.getWalletByCurrencyCode({ currencyCode });
     // To Do: Borrar logs
     console.log(this.wallet)
   }
 
   async loadMarketPrice(marketId: string): Promise<any> {
-    this.currentMarketPrice = await this.marketService.getMarketPriceById({ marketId })
-      // To Do: Borrar logs
-    console.log(this.currentMarketPrice)
+    this.currentMarketPrice = await this.marketService.getMarketPriceById({ marketId });
   }
+
+
+  async loadMarket(marketId: string): Promise<any> {
+    this.currentMarket = await this.marketService.getMarketById({ marketId });
+  }
+
+  updateAmountFormValidation(minOrderAmount: [number, string]) {
+    this.form.get('amount')?.setValidators([Validators.required, Validators.min(minOrderAmount[0])]);
+    this.form.get('amount')?.updateValueAndValidity();
+  }
+
 
   nextStep() {
     this.currentStepForm++;
@@ -100,6 +130,7 @@ export class BuySellFormComponent implements OnInit {
     const currentMarketPrice = this.currentMarketPrice?.currentPrice;
     return amountInCrypto * currentMarketPrice;
   }
+
 
   orderType() {
     switch (this.currentStepForm) {
@@ -129,4 +160,11 @@ export class BuySellFormComponent implements OnInit {
     }
   }
 
+  isFormValidate(): Boolean | undefined {
+    console.log("[IS FORM VALIDATE]", this.form.get('amount')?.valid)
+    return this.form.get('amount')?.valid
+  }
+
+
 }
+

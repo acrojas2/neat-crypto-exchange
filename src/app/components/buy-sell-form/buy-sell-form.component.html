@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center min-h-screen">
-  <div class="flex-col items-start justify-center w-2/5">
+  <div class="flex-col items-start justify-center w-2/5"  *ngIf="currentMarket && currentMarketPrice">
     <a [routerLink]="['/home']" class="text-center underline"> < Volver al home</a>
 
     <form [formGroup]="form" class="flex flex-col flex-1 p-10 mt-4 bg-white rounded-lg shadow-md">
@@ -7,7 +7,7 @@
       <div *ngIf="currentStepForm === 1" class="mb-4">
         <h2 class="mb-8 text-lg font-bold text-center">¿Cuánto quieres {{ orderType() }}?</h2>
         <div class="mb-4">
-          <label for="amount" class="block font-medium">Monto</label>
+          <label for="amount" class="block font-medium">Monto en {{ toWalletCurrencyCode }}</label>
           <input
             id="amount"
             type="number"
@@ -15,6 +15,9 @@
             placeholder="0.00"
             class="block w-full px-4 py-2 mt-1 mb-2 text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200"
           >
+          <small class="text-red-500" *ngIf="form.get('amount')?.hasError('min')">
+            El monto debe ser al menos {{ form.get('amount')?.getError('min')?.min }}.
+          </small>
         </div>
       </div>
 
@@ -25,7 +28,7 @@
           <p>{{ confirmationOrderData.amount }}</p>
         </div>
         <div class="flex flex-row pb-5 mb-5 border-b">
-          <p class="flex-1">Monto en moneda fiat {{ toWalletCurrencyCode }}</p>
+          <p class="flex-1">Monto en moneda fiat {{ fromWalletCurrencyCode }}</p>
           <p>{{ confirmationOrderData.fiatAmount }}</p>
         </div>
         <div class="flex flex-row pb-5 mb-5 border-b">
@@ -42,7 +45,8 @@
         type="button"
         (click)="nextStep()"
         *ngIf="currentStepForm < totalStepsForm"
-        class="py-3 mt-6 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400"
+        [disabled]="!isFormValidate()"
+        class="py-3 mt-6 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400 disabled:bg-slate-400"
       >
         Continuar
       </button>
