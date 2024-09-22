@@ -20,7 +20,8 @@ export class BuySellFormComponent implements OnInit {
   type: string | null = null;
   wallet: {
     balance: number;
-    frozenBalance: number;
+    frozenBalanceToRemove: number;
+    frozenBalanceToAdd: number;
     currencyCode: string;
     [key: string]: number | string | any[];
   } | null = null;
@@ -61,7 +62,6 @@ export class BuySellFormComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      currency: ['', Validators.required],
       amount: [''],
     })
   }
@@ -116,11 +116,12 @@ export class BuySellFormComponent implements OnInit {
       if (this.type == 'buy') {
         const currentMarketPrice = this.currentMarketPrice?.currentPrice;
         if (this.toWalletCurrencyCode) {
-          return [(this.wallet.balance - this.wallet.frozenBalance) / currentMarketPrice, this.toWalletCurrencyCode]
+          return [(this.wallet.balance - this.wallet.frozenBalanceToRemove) / currentMarketPrice, this.toWalletCurrencyCode]
         }
       }
       if (this.fromWalletCurrencyCode) {
-        return [this.wallet?.balance - this.wallet.frozenBalance, this.fromWalletCurrencyCode]
+        const maxAmount = Math.max(this.wallet?.balance - this.wallet.frozenBalanceToRemove, 0);
+        return [maxAmount, this.fromWalletCurrencyCode]
       }
     }
     return undefined;
@@ -192,6 +193,15 @@ export class BuySellFormComponent implements OnInit {
     console.log("[IS FORM VALIDATE]", this.form.get('amount')?.valid)
     return this.form.get('amount')?.valid
   }
+
+  amountLabelCurrency() {
+    return this.type == 'buy' ? this.toWalletCurrencyCode : this.fromWalletCurrencyCode;
+  }
+
+  amountFiatLabelCurrency() {
+    return this.type == 'buy' ? this.fromWalletCurrencyCode : this.toWalletCurrencyCode;
+  }
+
 
   async createOrder(): Promise<any> {
     if (this.type) {
