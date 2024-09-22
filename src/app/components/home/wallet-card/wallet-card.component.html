@@ -2,10 +2,27 @@
   <div class="flex-1">
     <span class="mb-4 font-semibold">Billetera {{ name }}</span>
     <p class="text-sm">Saldo total disponible</p>
-    <p>{{ code }} $ {{ balance }}</p>
-    <div class="flex px-3 py-2 mt-3 text-xs rounded bg-primary-neat-blue-100">
+    <div class="flex">
+      <p class="flex-1">{{ code }} $ {{ balance }}</p>
+      <a *ngIf="code && allowedToSell(code)"
+      [routerLink]="['/buy-sell']"
+      [queryParams]="{
+        type: 'sell',
+        fromWalletCurrencyCode: code,
+        toWalletCurrencyCode: 'USD'
+        }"
+      class="text-center underline"
+      >
+      Vender
+    </a>
+    </div>
+    <div class="flex px-3 py-2 mt-5 text-xs text-yellow-700 bg-yellow-100 rounded">
       <p class="flex-1">Saldo congelado</p>
-      <p>{{ code }} $ {{ frozenBalance }}</p>
+      <p>- {{ code }} $ {{ frozenBalanceToRemove }}</p>
+    </div>
+    <div class="flex px-3 py-2 mt-1 text-xs text-green-800 bg-green-100 rounded">
+      <p class="flex-1">Saldo congelado</p>
+      <p>+ {{ code }} $ {{ frozenBalanceToAdd }}</p>
     </div>
   </div>
 </div>

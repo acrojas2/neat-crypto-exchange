@@ -7,7 +7,7 @@
       <div *ngIf="currentStepForm === 1" class="mb-4">
         <h2 class="mb-8 text-lg font-bold text-center">¿Cuánto quieres {{ orderType() }}?</h2>
         <div class="mb-4">
-          <label for="amount" class="block font-medium">Monto en {{ toWalletCurrencyCode }}</label>
+          <label for="amount" class="block font-medium">Monto en {{ amountLabelCurrency() }}</label>
           <input
             id="amount"
             type="number"
@@ -27,11 +27,11 @@
       <div *ngIf="currentStepForm === 2" class="flex flex-col mb-4">
         <h2 class="mb-8 text-lg font-bold text-center">Confirmación de {{ orderType() }}</h2>
         <div class="flex flex-row pb-5 mb-5 border-b">
-          <p class="flex-1">Vas a comprar {{ toWalletCurrencyCode }}</p>
+          <p class="flex-1">Vas a comprar {{ amountLabelCurrency() }}</p>
           <p>{{ confirmationOrderData.amount }}</p>
         </div>
         <div class="flex flex-row pb-5 mb-5 border-b">
-          <p class="flex-1">Monto en moneda fiat {{ fromWalletCurrencyCode }}</p>
+          <p class="flex-1">Monto en moneda fiat {{   amountFiatLabelCurrency() }}</p>
           <p>{{ confirmationOrderData.fiatAmount }}</p>
         </div>
         <div class="flex flex-row pb-5 mb-5 border-b">
