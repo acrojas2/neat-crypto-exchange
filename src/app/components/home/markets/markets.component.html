@@ -24,8 +24,8 @@
             [routerLink]="['/buy-sell']"
             [queryParams]="{
               type: 'buy',
-              fromWalletCurrencyCode: marketPrice.baseCurrency,
-              toWalletCurrencyCode: marketPrice.quoteCurrency
+              fromWalletCurrencyCode: marketPrice.quoteCurrency,
+              toWalletCurrencyCode: marketPrice.baseCurrency
               }"
             class="text-center underline"
           >
