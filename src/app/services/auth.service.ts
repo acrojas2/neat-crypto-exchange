@@ -29,6 +29,8 @@ export class AuthService {
     const userWithCredentials = await signInWithEmailAndPassword(this.auth, email, password);
     await userWithCredentials.user.getIdToken();
 
+    console.log("TOKEN", userWithCredentials)
+
     return userWithCredentials;
   }
 
