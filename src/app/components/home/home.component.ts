@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       this.wallets = await this.walletService.getWallets();
+      console.log("[WALLETS]", this.wallets)
     } catch (error) {
       console.error('Error al cargar las wallets:', error);
     }
