@@ -20,6 +20,7 @@ export class BuySellFormComponent implements OnInit {
   type: string | null = null;
   wallet: {
     balance: number;
+    frozenBalance: number;
     currencyCode: string;
     [key: string]: number | string | any[];
   } | null = null;
@@ -115,11 +116,11 @@ export class BuySellFormComponent implements OnInit {
       if (this.type == 'buy') {
         const currentMarketPrice = this.currentMarketPrice?.currentPrice;
         if (this.toWalletCurrencyCode) {
-          return [this.wallet.balance / currentMarketPrice, this.toWalletCurrencyCode]
+          return [(this.wallet.balance - this.wallet.frozenBalance) / currentMarketPrice, this.toWalletCurrencyCode]
         }
       }
       if (this.fromWalletCurrencyCode) {
-        return [this.wallet?.balance, this.fromWalletCurrencyCode]
+        return [this.wallet?.balance - this.wallet.frozenBalance, this.fromWalletCurrencyCode]
       }
     }
     return undefined;
