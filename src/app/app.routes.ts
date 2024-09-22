@@ -7,6 +7,7 @@ import { AuthRedirectGuard } from './guards/auth-redirect.guard';
 import { BuySellFormComponent } from './components/buy-sell-form/buy-sell-form.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'sign-up', component: SignupComponent, canActivate: [AuthRedirectGuard] },
   { path: 'login', component: LoginComponent, canActivate: [AuthRedirectGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
