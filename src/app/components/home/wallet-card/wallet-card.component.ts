@@ -9,6 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class WalletCardComponent {
   @Input() balance: number | undefined;
+  @Input() frozenBalance: number | undefined;
   @Input() name: string | undefined;
   @Input() code: string | undefined;
 }

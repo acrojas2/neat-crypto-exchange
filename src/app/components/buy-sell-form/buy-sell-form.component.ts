@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { WalletService } from '../../services/wallet-service.service';
+import { OrdersService } from '../../services/orders.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MarketsService } from '../../services/markets-service.service';
 import { RouterModule } from '@angular/router';
@@ -24,7 +25,7 @@ export class BuySellFormComponent implements OnInit {
   } | null = null;
 
   currentStepForm: number = 1;
-  totalStepsForm: number = 2;
+  totalStepsForm: number = 3;
   form: FormGroup;
 
   currentMarketPrice: {
@@ -44,16 +45,18 @@ export class BuySellFormComponent implements OnInit {
   currentMarket: {
     market: {
       minOrderAmount: [number, string];
+      id: string;
       [key: string]: number | string | any[];
     }
 
-  } = { market: { minOrderAmount: [ 0, ''] } }
+  } = { market: { minOrderAmount: [ 0, ''], id: '' } }
 
 
   constructor(
     private route: ActivatedRoute,
     private walletService: WalletService,
     private marketService: MarketsService,
+    private ordersService: OrdersService,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
@@ -159,6 +162,8 @@ export class BuySellFormComponent implements OnInit {
         return this.type === 'buy' ? 'comprar' : 'vender'
       case 2:
         return this.type === 'buy' ? 'compra' : 'venta'
+      case 3:
+        return this.type === 'buy' ? 'compra' : 'venta'
     }
     return;
   }
@@ -185,6 +190,21 @@ export class BuySellFormComponent implements OnInit {
     // To Do: borrar los logs
     console.log("[IS FORM VALIDATE]", this.form.get('amount')?.valid)
     return this.form.get('amount')?.valid
+  }
+
+  async createOrder(): Promise<any> {
+    if (this.type) {
+      await this.ordersService.createOrder({
+        amount: this.getFormValue('amount'),
+        type: this.type,
+        currentMarketPrice: this.currentMarketPrice.currentPrice,
+        marketId: this.currentMarket.market.id
+      });
+      this.nextStep();
+    }
+
+    // To Do: Borrar logs
+    console.log(this.wallet)
   }
 
 
