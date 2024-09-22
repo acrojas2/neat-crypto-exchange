@@ -18,6 +18,9 @@
           <small class="text-red-500" *ngIf="form.get('amount')?.hasError('min')">
             El monto debe ser al menos {{ form.get('amount')?.getError('min')?.min }}.
           </small>
+          <small class="text-red-500" *ngIf="form.get('amount')?.hasError('max')">
+            El monto debe ser como máximo {{ form.get('amount')?.getError('max')?.max }}.
+          </small>
         </div>
       </div>
 
