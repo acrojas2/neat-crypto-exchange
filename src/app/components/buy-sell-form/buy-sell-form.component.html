@@ -44,10 +44,18 @@
         </div>
       </div>
 
+      <div *ngIf="currentStepForm === 3" class="flex flex-col mb-4">
+        <h2 class="mb-8 text-lg font-bold text-center">Orden de {{ orderType() }}</h2>
+        <div class="text-center">
+          <p class="mb-3">Hemos recibido tu orden de {{orderType() }} satisfactoriamente.</p>
+          <p>Cuando se ejecute tu orden, lo verás reflejado en tu billetera. Mientras tanto tendrás los saldos congelados en las billeteras involucradas.</p>
+        </div>
+      </div>
+
       <button
         type="button"
         (click)="nextStep()"
-        *ngIf="currentStepForm < totalStepsForm"
+        *ngIf="currentStepForm < totalStepsForm - 1"
         [disabled]="!isFormValidate()"
         class="py-3 mt-6 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400 disabled:bg-slate-400"
       >
@@ -56,8 +64,8 @@
 
       <button
         type="submit"
-        (click)="nextStep()"
-        *ngIf="currentStepForm === totalStepsForm"
+        (click)="createOrder()"
+        *ngIf="currentStepForm === totalStepsForm - 1"
         class="py-3 mb-2 font-semibold text-white rounded-full bg-primary-neat-blue-500 hover:bg-primary-neat-blue-400"
       >
         Confirmar
