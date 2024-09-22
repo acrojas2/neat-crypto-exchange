@@ -17,7 +17,11 @@ export class BuySellFormComponent implements OnInit {
   fromWalletCurrencyCode: string | null = null;
   toWalletCurrencyCode: string | null = null;
   type: string | null = null;
-  wallet: object | null = null;
+  wallet: {
+    balance: number;
+    currencyCode: string;
+    [key: string]: number | string | any[];
+  } | null = null;
 
   currentStepForm: number = 1;
   totalStepsForm: number = 2;
@@ -69,13 +73,15 @@ export class BuySellFormComponent implements OnInit {
       }
       const marketId = this.getMarketId();
 
-      this.loadMarketPrice(marketId);
+      await this.loadMarketPrice(marketId);
 
       await this.loadMarket(marketId);
 
       const { minOrderAmount } = this.currentMarket.market;
-      this.updateAmountFormValidation(minOrderAmount);
-
+      const maxAmountOrder = this.maxOrderAmount();
+      if (maxAmountOrder) {
+        this.updateAmountFormValidation(minOrderAmount, maxAmountOrder);
+      }
     });
   }
 
@@ -101,8 +107,23 @@ export class BuySellFormComponent implements OnInit {
     this.currentMarket = await this.marketService.getMarketById({ marketId });
   }
 
-  updateAmountFormValidation(minOrderAmount: [number, string]) {
-    this.form.get('amount')?.setValidators([Validators.required, Validators.min(minOrderAmount[0])]);
+  maxOrderAmount(): [number, string] | undefined {
+    if (this.wallet) {
+      if (this.type == 'buy') {
+        const currentMarketPrice = this.currentMarketPrice?.currentPrice;
+        if (this.toWalletCurrencyCode) {
+          return [this.wallet.balance / currentMarketPrice, this.toWalletCurrencyCode]
+        }
+      }
+      if (this.fromWalletCurrencyCode) {
+        return [this.wallet?.balance, this.fromWalletCurrencyCode]
+      }
+    }
+    return undefined;
+  }
+
+  updateAmountFormValidation(minOrderAmount: [number, string], maxAmountOrder: [number, string]) {
+    this.form.get('amount')?.setValidators([Validators.required, Validators.min(minOrderAmount[0]), Validators.max(maxAmountOrder[0])]);
     this.form.get('amount')?.updateValueAndValidity();
   }
 
@@ -161,6 +182,7 @@ export class BuySellFormComponent implements OnInit {
   }
 
   isFormValidate(): Boolean | undefined {
+    // To Do: borrar los logs
     console.log("[IS FORM VALIDATE]", this.form.get('amount')?.valid)
     return this.form.get('amount')?.valid
   }
