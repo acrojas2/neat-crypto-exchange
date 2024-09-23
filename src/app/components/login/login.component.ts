@@ -33,7 +33,7 @@ export class LoginComponent {
     }).catch(err => {
       console.log(err)
       if (err.code === 'auth/invalid-credential') {
-        this.errorMessage = 'Este correo ya está registrado.';
+        this.errorMessage = 'Las credenciales son inválidas';
       } else {
         this.errorMessage = 'Ha ocurrido un error. Inténtelo nuevamente.';
       }
