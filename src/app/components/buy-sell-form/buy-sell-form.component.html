@@ -1,6 +1,6 @@
 <div class="flex items-center justify-center min-h-screen">
   <div class="flex-col items-start justify-center w-2/5"  *ngIf="currentMarket && currentMarketPrice">
-    <a [routerLink]="['/home']" class="text-center underline"> < Volver al home</a>
+    <a [routerLink]="['/home']" class="text-center underline"> < Volver al Home</a>
 
     <form [formGroup]="form" class="flex flex-col flex-1 p-10 mt-4 bg-white rounded-lg shadow-md">
 
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div *ngIf="currentStepForm === 3" class="flex flex-col mb-4">
+      <div *ngIf="currentStepForm === 3" class="flex flex-col mb-8">
         <h2 class="mb-8 text-lg font-bold text-center">Orden de {{ orderType() }}</h2>
         <div class="text-center">
           <p class="mb-3">Hemos recibido tu orden de {{orderType() }} satisfactoriamente.</p>
@@ -74,11 +74,19 @@
       <button
         type="button"
         (click)="previousStep()"
-        *ngIf="currentStepForm > 1"
+        *ngIf="currentStepForm > 1 && currentStepForm !== totalStepsForm"
         class="py-3 font-semibold border rounded-full text-primary-neat-blue-500 bg-primary-neat-blue-200 hover:bg-white border-primary-neat-blue-300"
       >
         Volver
       </button>
+
+      <a
+        [routerLink]="['/home']"
+        *ngIf="currentStepForm === totalStepsForm"
+        class="py-3 font-semibold text-center border rounded-full text-primary-neat-blue-500 bg-primary-neat-blue-200 hover:bg-white border-primary-neat-blue-300"
+      >
+      Volver al Home
+      </a>
 
     </form>
   </div>
