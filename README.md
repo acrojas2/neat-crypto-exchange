@@ -1,4 +1,4 @@
-## neat-crypto-exchange-api
+## neat-crypto-exchange
 
 Para correr este proyecto hay que seguir los siguientes pasos:
  1. Clonar este repositorio en tu local
